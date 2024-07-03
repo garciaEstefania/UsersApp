@@ -16,6 +16,11 @@ const calculateScreenSize = () => {
 
 const scaleFactor = calculateScreenSize() < 1000 ? 1.5 : 1;
 
+/**
+ * This function helps to handle responsiveness. It can be used on: padding, margin, width, height, fontSize, borderRadius, and anything related to size.
+ * @param value
+ * @returns number
+ */
 const scaleF = (value: number) => {
   return scale(value / scaleFactor);
 };
