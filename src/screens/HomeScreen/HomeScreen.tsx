@@ -1,21 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
   ActivityIndicator,
   Alert,
   FlatList,
-  Image,
   RefreshControl,
+  SafeAreaView,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import {User} from '~redux/api/interfaces';
 import {useGetUsersQuery} from '~redux/api/listApi';
 import styles from './styles';
+import {UserCard} from '~components/UserCard/UserCard';
+import {EmptyList} from '~components/EmptyList/EmptyList';
+import {SearchBar} from '~components/SearchBar/SearchBar';
+import {useFilterData} from '~hooks/useFilterData';
 
 export const HomeScreen = () => {
   const {isLoading, data, refetch, isError} = useGetUsersQuery(undefined);
-  const [text, setText] = useState('');
+  const {filterList, text, setText} = useFilterData();
 
   useEffect(() => {
     if (isError) {
@@ -23,48 +26,13 @@ export const HomeScreen = () => {
     }
   }, [isError]);
 
-  const filterList = (list: User[]) => {
-    return list?.filter((listItem: User) =>
-      listItem.login.toLowerCase().includes(text.toLowerCase()),
-    );
-  };
-
-  const renderUsers = (item: User) => {
-    return (
-      <View style={styles.listItem}>
-        <Image
-          source={{
-            uri: item.avatar_url,
-          }}
-          style={styles.avatar}
-          resizeMode="cover"
-        />
-        <Text style={styles.userName}>{item.login}</Text>
-      </View>
-    );
-  };
-
-  const renderEmptyList = () => {
-    return (
-      <View style={styles.emptyListContainer}>
-        <Text style={styles.labelEmptyList}>No items available</Text>
-      </View>
-    );
-  };
-
   return (
     <View style={styles.mainContainer}>
+      <SafeAreaView />
       <View style={styles.titleContainer}>
         <Text style={styles.titleScreen}>Users</Text>
       </View>
-      <View style={styles.searchBarContainer}>
-        <TextInput
-          value={text}
-          onChangeText={value => setText(value)}
-          style={styles.searchBar}
-          placeholder="Search user"
-        />
-      </View>
+      <SearchBar text={text} onChangeText={setText} />
       {isLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size={'large'} color={'#2177BF'} />
@@ -72,8 +40,8 @@ export const HomeScreen = () => {
       ) : (
         <FlatList
           data={filterList(data as User[])}
-          renderItem={({item}) => renderUsers(item)}
-          ListEmptyComponent={() => renderEmptyList()}
+          renderItem={({item}) => <UserCard user={item} />}
+          ListEmptyComponent={<EmptyList label="No users found" />}
           refreshControl={
             <RefreshControl refreshing={isLoading} onRefresh={refetch} />
           }
