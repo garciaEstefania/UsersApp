@@ -11,6 +11,13 @@ const styles = StyleSheet.create({
     margin: scaleF(10),
     borderRadius: scaleF(20),
     elevation: 6,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
     backgroundColor: '#fff',
   },
   avatar: {
@@ -24,6 +31,10 @@ const styles = StyleSheet.create({
     fontSize: scaleF(20),
     fontWeight: '500',
     color: '#000',
+  },
+  iconContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
   },
 });
 

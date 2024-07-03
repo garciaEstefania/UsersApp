@@ -3,6 +3,7 @@ import {scaleF} from '~helpers/metrics';
 
 const styles = StyleSheet.create({
   searchBarContainer: {
+    // flexDirection: 'row',
     paddingHorizontal: scaleF(10),
     paddingVertical: scaleF(20),
   },
@@ -13,6 +14,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     backgroundColor: '#fff',
+  },
+  icon: {
+    position: 'absolute',
+    top: scaleF(38),
+    right: scaleF(25),
   },
 });
 
